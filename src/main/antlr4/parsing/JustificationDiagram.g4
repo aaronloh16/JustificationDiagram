@@ -9,9 +9,23 @@ grammar JustificationDiagram;
 diagram:
     START
     (title=TITLE)?
-    instruction*
+    (fragmentDeclaration | justificationDeclaration)*
+    weavingDirective*
     END
     EOF;
+
+fragmentDeclaration:
+    'fragment' label=STRING 'as' ALIAS '{'
+    instruction*
+    '}';
+
+justificationDeclaration:
+    'justification' label=STRING 'as' ALIAS '{'
+    instruction*
+    '}';
+
+weavingDirective:
+    'weave' ALIAS 'into' ALIAS ('with' ALIAS '=' ALIAS)?;
 
 instruction:
     declaration |
@@ -47,5 +61,4 @@ TYPE: ('subconclusion' | 'strategy' | 'rationale' | 'domain' | 'support');
 ALIAS: ('A'..'Z' | 'a'..'z' | '1'..'9')+;
 LINK: ('-->' | '..>');
 
-STRING : '"' STRING_CHAR*? '"';
-STRING_CHAR : ~('\r' | '\n');
+
