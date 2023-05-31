@@ -1,8 +1,7 @@
 package parsing;
 
 import justificationDiagram.JustificationDiagram;
-import models.Conclusion;
-import models.NodeFactory;
+import models.*;
 
 public class JDInitializer extends JustificationDiagramBaseVisitor<String> {
     public JustificationDiagram diagram;
@@ -37,11 +36,8 @@ public class JDInitializer extends JustificationDiagramBaseVisitor<String> {
 
     @Override
     public String visitConclusion(JustificationDiagramParser.ConclusionContext ctx) {
-        String alias = ctx.ALIAS().getText();
-        String label = ctx.label.getText();
-        String restriction = ctx.restriction != null ? ctx.restriction.getText() : null;
-        Conclusion conclusion = new Conclusion(alias, label, restriction);
-        diagram.nodes.put(alias, conclusion);
+        diagram.nodes.put(ctx.ALIAS().getText(), new Conclusion(ctx.ALIAS().getText(),
+                ctx.label.getText(), ctx.restriction != null? ctx.restriction.getText() : null));
         return super.visitConclusion(ctx);
     }
 }
